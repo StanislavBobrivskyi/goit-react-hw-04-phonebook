@@ -6,8 +6,16 @@ import { ContactFilter } from './ContactFiltr/ContactFilter';
 
 const storageKey = 'newContacts';
 
+const getNewContacts = () => {
+  const savedContacts = localStorage.getItem(storageKey);
+  if (savedContacts !== null) {
+    return JSON.parse(savedContacts);
+  }
+  return [];
+};
+
 export const App = () => {
-  const [contacts, setContacts] = useState([]);
+  const [contacts, setContacts] = useState(getNewContacts);
   const [filter, setFilter] = useState('');
 
   const handleAddContact = values => {
@@ -51,13 +59,6 @@ export const App = () => {
   useEffect(() => {
     localStorage.setItem(storageKey, JSON.stringify(contacts));
   }, [contacts]);
-
-  useEffect(() => {
-    const savedContacts = localStorage.getItem(storageKey);
-    if (savedContacts !== null) {
-      setContacts(JSON.parse(savedContacts));
-    }
-  }, []);
 
   const filteredContacts = getFilteredContacts();
 
