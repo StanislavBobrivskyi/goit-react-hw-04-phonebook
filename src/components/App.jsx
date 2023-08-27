@@ -4,7 +4,7 @@ import { ContactForm } from './ContactForm/ContactForm';
 import { ContactList } from './ContactList/ContactList';
 import { ContactFilter } from './ContactFiltr/ContactFilter';
 
-const localStorageKey = 'contacts';
+const storageKey = 'newContacts';
 
 export const App = () => {
   const [contacts, setContacts] = useState([]);
@@ -48,17 +48,16 @@ export const App = () => {
     setContacts([]);
     setFilter('');
   };
+  useEffect(() => {
+    localStorage.setItem(storageKey, JSON.stringify(contacts));
+  }, [contacts]);
 
   useEffect(() => {
-    const savedContacts = localStorage.getItem(localStorageKey);
+    const savedContacts = localStorage.getItem(storageKey);
     if (savedContacts !== null) {
       setContacts(JSON.parse(savedContacts));
     }
   }, []);
-
-  useEffect(() => {
-    localStorage.setItem(localStorageKey, JSON.stringify(contacts));
-  }, [contacts]);
 
   const filteredContacts = getFilteredContacts();
 
